@@ -1,0 +1,15 @@
+/Users/gimchan-yeong/Desktop/Study_AI2/Study_AI2/0012 Unity_AI/Csharp2Python_TcpIp/Csharp_TCPIP/Csharp_TCPIP/bin/Debug/net6.0/Csharp_TCPIP
+/Users/gimchan-yeong/Desktop/Study_AI2/Study_AI2/0012 Unity_AI/Csharp2Python_TcpIp/Csharp_TCPIP/Csharp_TCPIP/bin/Debug/net6.0/Csharp_TCPIP.deps.json
+/Users/gimchan-yeong/Desktop/Study_AI2/Study_AI2/0012 Unity_AI/Csharp2Python_TcpIp/Csharp_TCPIP/Csharp_TCPIP/bin/Debug/net6.0/Csharp_TCPIP.runtimeconfig.json
+/Users/gimchan-yeong/Desktop/Study_AI2/Study_AI2/0012 Unity_AI/Csharp2Python_TcpIp/Csharp_TCPIP/Csharp_TCPIP/bin/Debug/net6.0/Csharp_TCPIP.dll
+/Users/gimchan-yeong/Desktop/Study_AI2/Study_AI2/0012 Unity_AI/Csharp2Python_TcpIp/Csharp_TCPIP/Csharp_TCPIP/bin/Debug/net6.0/Csharp_TCPIP.pdb
+/Users/gimchan-yeong/Desktop/Study_AI2/Study_AI2/0012 Unity_AI/Csharp2Python_TcpIp/Csharp_TCPIP/Csharp_TCPIP/obj/Debug/net6.0/Csharp_TCPIP.csproj.AssemblyReference.cache
+/Users/gimchan-yeong/Desktop/Study_AI2/Study_AI2/0012 Unity_AI/Csharp2Python_TcpIp/Csharp_TCPIP/Csharp_TCPIP/obj/Debug/net6.0/Csharp_TCPIP.GeneratedMSBuildEditorConfig.editorconfig
+/Users/gimchan-yeong/Desktop/Study_AI2/Study_AI2/0012 Unity_AI/Csharp2Python_TcpIp/Csharp_TCPIP/Csharp_TCPIP/obj/Debug/net6.0/Csharp_TCPIP.AssemblyInfoInputs.cache
+/Users/gimchan-yeong/Desktop/Study_AI2/Study_AI2/0012 Unity_AI/Csharp2Python_TcpIp/Csharp_TCPIP/Csharp_TCPIP/obj/Debug/net6.0/Csharp_TCPIP.AssemblyInfo.cs
+/Users/gimchan-yeong/Desktop/Study_AI2/Study_AI2/0012 Unity_AI/Csharp2Python_TcpIp/Csharp_TCPIP/Csharp_TCPIP/obj/Debug/net6.0/Csharp_TCPIP.csproj.CoreCompileInputs.cache
+/Users/gimchan-yeong/Desktop/Study_AI2/Study_AI2/0012 Unity_AI/Csharp2Python_TcpIp/Csharp_TCPIP/Csharp_TCPIP/obj/Debug/net6.0/Csharp_TCPIP.dll
+/Users/gimchan-yeong/Desktop/Study_AI2/Study_AI2/0012 Unity_AI/Csharp2Python_TcpIp/Csharp_TCPIP/Csharp_TCPIP/obj/Debug/net6.0/refint/Csharp_TCPIP.dll
+/Users/gimchan-yeong/Desktop/Study_AI2/Study_AI2/0012 Unity_AI/Csharp2Python_TcpIp/Csharp_TCPIP/Csharp_TCPIP/obj/Debug/net6.0/Csharp_TCPIP.pdb
+/Users/gimchan-yeong/Desktop/Study_AI2/Study_AI2/0012 Unity_AI/Csharp2Python_TcpIp/Csharp_TCPIP/Csharp_TCPIP/obj/Debug/net6.0/Csharp_TCPIP.genruntimeconfig.cache
+/Users/gimchan-yeong/Desktop/Study_AI2/Study_AI2/0012 Unity_AI/Csharp2Python_TcpIp/Csharp_TCPIP/Csharp_TCPIP/obj/Debug/net6.0/ref/Csharp_TCPIP.dll

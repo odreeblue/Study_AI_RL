@@ -1,0 +1,26 @@
+﻿<Properties StartupConfiguration="{175283E8-99DE-45BE-86EC-CC020FA5D38C}|Default">
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Csharp_TCPIP/Program.cs">
+    <Files>
+      <File FileName="Csharp_TCPIP/Program.cs" Line="109" Column="32" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="Csharp_TCPIP" expanded="True">
+            <Node name="Csharp_TCPIP" expanded="True" />
+          </Node>
+        </State>
+      </Pad>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State />
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.Csharp__TCPIP PreferredExecutionTarget="MonoDevelop.Default" />
+</Properties>

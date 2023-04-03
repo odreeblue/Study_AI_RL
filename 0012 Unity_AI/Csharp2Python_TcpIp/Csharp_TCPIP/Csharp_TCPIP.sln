@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 25.0.1700.4
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Csharp_TCPIP", "Csharp_TCPIP\Csharp_TCPIP.csproj", "{175283E8-99DE-45BE-86EC-CC020FA5D38C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{175283E8-99DE-45BE-86EC-CC020FA5D38C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{175283E8-99DE-45BE-86EC-CC020FA5D38C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{175283E8-99DE-45BE-86EC-CC020FA5D38C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{175283E8-99DE-45BE-86EC-CC020FA5D38C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {636CCDE5-FC7A-4E2A-94C0-4C3E1DAB4C69}
+	EndGlobalSection
+EndGlobal

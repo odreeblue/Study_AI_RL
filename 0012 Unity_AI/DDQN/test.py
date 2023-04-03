@@ -1,0 +1,25 @@
+from PIL import Image
+import numpy as np
+img = Image.open("2022-09-06_23-45-15.png")
+#print(img)
+img = np.asarray(img)
+#print(img.shape)
+#print(img.shape[0])
+#print(img.shape[1])
+#print(img.shape[2])
+#print(img.size)
+image = Image.fromarray(img).convert("L")
+#img_resize = image.resize((int(image.width / 3), int(image.height / 3)))
+img_resize = image.resize((int(28*2*1.75), int(28*2)))
+
+img_resize.show()
+#img = np.asarray(image)
+
+#print(img.shape)
+#img = np.reshape(img,(658,1157))
+#print(img.shape)
+#image2 =Image.fromarray(img)
+#print(image2.size)
+#image2.show()
+#image.show()
+#print(img.size)
