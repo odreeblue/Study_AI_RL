@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Runtime.InteropServices;
 
-public delegate void CallbackDirection(int direction, int done);// delegate 선언
+public delegate void CallbackDirection(int direction);// delegate 선언
 public class Server : MonoBehaviour
 {
     #region private members
@@ -98,23 +98,23 @@ public class Server : MonoBehaviour
                 if (stream.CanRead)
                 {
                     Byte[] direction_bytes = new Byte[4];
-                    Byte[] isdone = new byte[4];
+                    //Byte[] isdone = new byte[4];
                     stream.Read(direction_bytes, 0, 4);//데이터 읽기
-                    stream.Read(isdone, 0, 4);
+                    //stream.Read(isdone, 0, 4);
                     int direction = BitConverter.ToInt32(direction_bytes, 0);//byte -> int 로 변환
-                    int done = BitConverter.ToInt32(isdone, 0);
-                    callbackDirection(direction, done);// 받은 action signal --> sphere 전달
+                    //int done = BitConverter.ToInt32(isdone, 0);
+                    callbackDirection(direction);// 받은 action signal --> sphere 전달
                                                        // Sphere의 OnDirection 호출
                     while (true)
                     {
 
-                        if (SendData.Count == 4 && imagedata != null) // Sphere로부터 데이터가 다 입력 됐으면
+                        if (SendData.Count == 4) // Sphere로부터 데이터가 다 입력 됐으면
                         {
                             datapacket.position_x = SendData[0];
                             datapacket.position_z = SendData[1];
-                            datapacket.is_collision = SendData[2];
-                            datapacket.image_size = SendData[3];
-                            datapacket.image = imagedata;
+                            datapacket.reward = SendData[2];
+                            datapacket.is_episode_end = SendData[3];
+                            //datapacket.image = imagedata;
                             break;
                         }
                         else
@@ -147,3 +147,21 @@ public class Server : MonoBehaviour
 }
 
 
+[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+public class DataPacket
+{
+    [MarshalAs(UnmanagedType.R4)]
+    public float position_x;
+    [MarshalAs(UnmanagedType.R4)]
+    public float position_z;
+    [MarshalAs(UnmanagedType.R4)]
+    public float reward;
+    [MarshalAs(UnmanagedType.R4)]
+    public float is_episode_end;
+    
+    //[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 51000)] ///// 여기가 진짜
+    //[MarshalAs(UnmanagedType.ByValArray)] --> 이거 안됌 전달 사이즈가 20밖에 안됌
+    //[MarshalAs(UnmanagedType.ByValArray, SizeConst = 32000)]
+    //public byte[] image;
+    //public string image; ////여기가 진짜 
+}
