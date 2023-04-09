@@ -80,7 +80,7 @@ public class SphereController : MonoBehaviour
             Server.Instance.SendData.Add(SphereRigidbody.transform.position.x); // position_x 전달
             Server.Instance.SendData.Add(SphereRigidbody.transform.position.z); // position_y 전달
             Server.Instance.SendData.Add(-5.0f); // 목표 지점 도착 전에 최대 step에 도달했으니 벌점 주기
-            Server.Instance.SendData.Add(0.0f); // 에피소드가 끝났다고 알려주기
+            Server.Instance.SendData.Add(1.0f); // 에피소드가 끝났다고 알려주기
 
             move = new Vector3(0, 0, 0);
             count_step = 0;
@@ -150,7 +150,7 @@ public class SphereController : MonoBehaviour
 
                 Server.Instance.SendData.Add(-5.0f); // 목표 지점 도착 전에 벽에 충돌했으니 벌점 주기
                
-                Server.Instance.SendData.Add(0.0f); // 에피소드가 끝났다고 알려주기
+                Server.Instance.SendData.Add(1.0f); // 에피소드가 끝났다고 알려주기
 
 
                 move = new Vector3(0, 0, 0);

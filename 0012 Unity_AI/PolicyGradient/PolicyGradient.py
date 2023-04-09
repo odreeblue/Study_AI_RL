@@ -3,7 +3,8 @@
 import sys
 
 #import gym
-from Env_Racing import Env
+from Env_Racing import Env1
+from Env_Racing import Env2
 import numpy as np
 
 import tensorflow as tf
@@ -135,7 +136,7 @@ class DQNAgent:
 
 
 # CREATING THE ENVIRONMENT
-miro_env = Env()
+miro_env = Env1()
 
 
 # INITIALIZING THE Q-PARAMETERS
@@ -188,7 +189,7 @@ if __name__ == "__main__":
             #state = next_state
             state = next_state
             episode_reward += reward
-            print(done)
+            #print(done)
             # if episode ends
             if done:
                 scores.append(episode_reward)
