@@ -22,7 +22,7 @@ public class SphereController : MonoBehaviour
     public GameObject goal;
     public bool IsGoal;
     public float bonus;
-    public int max_step = 100;
+    public int max_step = 300;
     public int count_step;
     //public Vector3 LastSpherePosition;
     //public Vector3 reflect;
@@ -49,7 +49,7 @@ public class SphereController : MonoBehaviour
     }
     void OnCollisionEnter(Collision col)
     {
-        if (col.gameObject.name.Substring(0,3) == "Out" || col.gameObject.name.Substring(0,3) == "InS")
+        if (col.gameObject.name.Substring(0, 3) == "Out" || col.gameObject.name.Substring(0, 3) == "InS")
         {
             collision_flag = true;
             Debug.Log(col.gameObject.name);
@@ -62,6 +62,15 @@ public class SphereController : MonoBehaviour
 
         }
        
+    }
+    void OnCollisionExit(Collision col)
+    {
+        if (col.gameObject.name.Substring(0, 3) == "Out" || col.gameObject.name.Substring(0, 3) == "InS")
+        {
+            collision_flag = false;
+            Debug.Log("벽에 부딪혔다가 나옴  "+ col.gameObject.name);
+        }
+
     }
 
     // Update is called once per frame
@@ -127,7 +136,7 @@ public class SphereController : MonoBehaviour
                 }
                 else // 골 지점에 도달하지 않았다1
                 {
-                    Server.Instance.SendData.Add(1f); // 목표지점에 도착하지 않았고, 살아있으니 1점 보상
+                    Server.Instance.SendData.Add(0.01f); // 목표지점에 도착하지 않았고, 벽에 부딪히지 않았으니 0.01점 보상
 
                    
                     Server.Instance.SendData.Add(0.0f); // 에피소드가 끝나지 않았다고 전달하기
@@ -148,16 +157,17 @@ public class SphereController : MonoBehaviour
                 Server.Instance.SendData.Add(OriginalPosition.z); // position_y 전달
 
 
-                Server.Instance.SendData.Add(-5.0f); // 목표 지점 도착 전에 벽에 충돌했으니 벌점 주기
+                Server.Instance.SendData.Add(-0.05f); // 목표 지점 도착 전에 벽에 충돌했으니 벌점 주기
                
-                Server.Instance.SendData.Add(1.0f); // 에피소드가 끝났다고 알려주기
+                Server.Instance.SendData.Add(0.0f); // 에피소드가 끝나지 않았다고 전달하기
 
 
                 move = new Vector3(0, 0, 0);
-                SphereRigidbody.transform.position = new Vector3(4.0f, 3.0f, -4.0f); // 공 위치 초기화
-                collision_flag = false;
-                SpherePosition = new Vector3(4.0f, 0.0f, -4.0f);
-                
+                SphereRigidbody.transform.position = OriginalPosition; // 공 위치 초기화
+                //collision_flag = false;
+                SpherePosition = OriginalPosition;
+                //SpherePosition = new Vector3(4.0f, 0.0f, -4.0f);
+
 
             }
            
