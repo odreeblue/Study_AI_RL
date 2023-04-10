@@ -34,7 +34,7 @@ class Env1():
         reward = struct.unpack('f',self.socket.recv(4))[0] # 다음 공의 x,z에서 받을 리워드
         done_ = struct.unpack('f',self.socket.recv(4))[0] # episode가 끝났는지에 대한 플래그
                                                           # 0 -> False, 1 -> True
-        print("done : ", done_)
+        print("done : ", done_," rewards: ", reward)
         if done_ == 0.0:
             done = False
         elif done_ == 1.0:

@@ -49,7 +49,7 @@ class DQNAgent:
         is_test (bool): flag to show the current mode (train / test)
     """
 
-    def __init__(self, env: Env,):
+    def __init__(self, env: Env1,):
         """Initialization.
         
         Args:
