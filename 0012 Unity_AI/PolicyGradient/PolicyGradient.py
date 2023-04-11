@@ -28,6 +28,10 @@ class Network(Model):
         self.layer2 = tf.keras.layers.Dense(hidden_size, activation='relu')
         self.policy = tf.keras.layers.Dense(self.action_size,activation='softmax')
 
+        #self.cnn_model.add(tf.keras.layers.Conv2D(32,(6,6),activation='relu',input_shape=(64,64,1)))
+
+
+
     def call(self, state):
         layer1 = self.layer1(state)
         layer2 = self.layer2(layer1)
@@ -154,7 +158,7 @@ agent = DQNAgent(
 if __name__ == "__main__":
     #List to contain all the rewards of all the episodes given to the agent
     scores = []
-    conn = agent.env.connect() # 게임과 tcp/ip 연결
+    agent.env.connect() # 게임과 tcp/ip 연결
 
     agent_x = 4.0
     agent_y = -4.0
@@ -165,7 +169,8 @@ if __name__ == "__main__":
     for episode in range(max_episodes):
         ## Reset environment and get first new observation
         time.sleep(2)
-        state = [agent_x,agent_y] # 초기 위치
+        initial_state, reward, done = agent.env.step(99)
+        state = initial_state #[agent_x,agent_y] # 초기 위치
         episode_reward = 0
         done = False  # has the enviroment finished?
         

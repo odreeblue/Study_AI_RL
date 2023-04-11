@@ -22,6 +22,10 @@ server_port = 50001 # 위에서 설정한 서버 포트번호
 
 socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 socket.connect((server_ip, server_port))
+socket.setblocking(False)       
+
+socket.setblocking(True)
+
 # /end 입력될 때 까지 계속해서 서버에 패킷을 보냄
 #def image_recv(sock, default_size,size):
 #    data = b''
@@ -37,23 +41,19 @@ while True:
     direction_input = input()
     if direction_input == "w":
         direction = 0
-        done = 0
-        senddata = struct.pack('ii',direction,done)
+        senddata = struct.pack('i',direction)
         socket.sendall(senddata)
     elif direction_input == "s":
         direction = 1
-        done = 0
-        senddata = struct.pack('ii',direction,done)
+        senddata = struct.pack('i',direction)
         socket.sendall(senddata)
     elif direction_input == "d":
         direction = 2
-        done = 0
-        senddata = struct.pack('ii',direction,done)
+        senddata = struct.pack('i',direction)
         socket.sendall(senddata)
     elif direction_input == "a":
         direction = 3
-        done = 0
-        senddata = struct.pack('ii',direction,done)
+        senddata = struct.pack('i',direction)
         socket.sendall(senddata)
     elif direction_input == "x":
         break
@@ -82,11 +82,19 @@ while True:
     print("image_data : "+str(len(image_data))) # 39500
 
     x = base64.b64decode(image_data)
+
     filename = 'some_image1.png'  # I assume you have a way of picking unique filenames
     with open(filename, 'wb') as f:
         f.write(x)
-
-
+    #print(x)
+    stream = BytesIO(x)
+    image = Image.open(stream).convert('L')
+    image = image.resize((64,64))
+    print(np.asarray(image))
+    print(np.asarray(image).shape)
+    #print(type(image))
+    stream.close()
+    image.show()
 
     tempdata = b''
     #tempdata = ""
@@ -98,13 +106,10 @@ while True:
     image_data2 = tempdata
     print("image_data2 : "+str(len(image_data2)))
     x2 = base64.b64decode(image_data2)
-    print(len(x2))
-    #stream = BytesIO(x2)
-    #image = Image.open(stream).convert('RGB')
-    #stream.close()
-    #image.show()
-    x = base64.b64decode(image_data)
+    # print(len(x2))
+    
+    
     filename = 'some_image2.png'  # I assume you have a way of picking unique filenames
     with open(filename, 'wb') as f:
-        f.write(x)
+        f.write(x2)
 socket.close()

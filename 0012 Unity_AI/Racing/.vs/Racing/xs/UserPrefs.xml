@@ -1,16 +1,21 @@
 ﻿<Properties StartupConfiguration="{B32525F9-3CED-DCA1-8D86-05047E283309}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Capture.cs">
-    <Files>
-      <File FileName="Assets/Scripts/SphereController.cs" Line="36" Column="24" />
-      <File FileName="Assets/Scripts/Capture.cs" Line="14" Column="27" />
-    </Files>
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="5d865051-71d8-4217-8d60-88d9af6c4554" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.Workbench>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="Racing" expanded="True">
             <Node name="Assets" expanded="True">
               <Node name="Material" expanded="True" />
-              <Node name="Scripts" expanded="True" />
+              <Node name="Scripts" expanded="True">
+                <Node name="SphereController.cs" selected="True" />
+              </Node>
             </Node>
           </Node>
         </State>
@@ -25,11 +30,4 @@
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="d0e586f2-2e07-447e-ba0e-37ab45e815bf" />
-  <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
-  </MonoDevelop.Ide.DebuggingService.Breakpoints>
 </Properties>

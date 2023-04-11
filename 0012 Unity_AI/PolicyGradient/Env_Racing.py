@@ -5,6 +5,10 @@ import subprocess
 import time
 #subprocess.call("./MiroGame.app")
 import base64
+from io import StringIO
+from io import BytesIO
+from PIL import Image
+import numpy as np
 class Env1():
     def __init__(self):
         '''게임 환경 실행'''
@@ -17,8 +21,9 @@ class Env1():
     def connect(self):
         self.socket.connect((self.server_ip, self.server_port))
 
+
     def step(self, action):
-        next_state = 0 #다음의 공의 위치 
+        next_state_position = 0 #다음의 공의 위치 
         reward = 0 # 다음의 공의 위치에서 받을 리워드
         done = False # 다음 공의 위치에 가게 되었을 때 게임이 종료되는지에 대한 플래그
 
@@ -29,29 +34,45 @@ class Env1():
         # 데이터 수신
         pos_x = struct.unpack('f',self.socket.recv(4))[0] # 다음 공의 x 좌표
         pos_y = struct.unpack('f',self.socket.recv(4))[0] # 다음 공의 z 좌표
-        next_state = [pos_x,pos_y]
+        next_state_position = [pos_x,pos_y]
 
         reward = struct.unpack('f',self.socket.recv(4))[0] # 다음 공의 x,z에서 받을 리워드
-        done_ = struct.unpack('f',self.socket.recv(4))[0] # episode가 끝났는지에 대한 플래그
-                                                          # 0 -> False, 1 -> True
-        #print("done : ", done_," rewards: ", reward)
+        done_ = struct.unpack('f',self.socket.recv(4))[0] # episode가 끝났는지에 대한 플래그 0 -> False, 1 -> True
         if done_ == 0.0:
             done = False
         elif done_ == 1.0:
             done = True
-
+        # 이미지 데이터 수신
         image_size = struct.unpack('f',self.socket.recv(4))[0] # image size 크기 받기
-        print(image_size)
+        print("x: "+str(pos_x)+", \
+           z: "+str(pos_y)+", \
+           reward: "+str(reward)+", \
+           is_episode_end: "+str(done)+", \
+           image_size : "+str(image_size))
         data = b''
-        #data= ""
-        to_receive = 51000-int(image_size)
+        to_receive = int(image_size)
         while to_receive > 0:
-            data += self.socket.recv(51000-int(image_size))
-            to_receive = int(51000-int(image_size)) - len(data)
-        
-        #image_data = base64.b64decode(data)
+            data += self.socket.recv(int(image_size))
+            to_receive = int(image_size) - len(data)
+        img = base64.b64decode(data) #base64데이터 -> 문자열데이터
+        stream = BytesIO(img) 
+        image = Image.open(stream).convert('L')
+        image = image.resize((64,64))
+        #print(np.asarray(image))
+        #print(np.asarray(image).shape)
+        stream.close()
+        next_state_image = np.asarray(image)
 
-        #print("reward : ",reward,", done : ", done_,", image size: ",len(image_data))
+        next_state = {'image':next_state_image,'position':next_state_position}
+
+        #####################
+        #### 버퍼 비우기 ####
+        tempdata = b''
+        to_receive2 = 51000-int(image_size)
+        while to_receive2 > 0:
+            tempdata += self.socket.recv(51000-int(image_size))
+            to_receive2 = int(51000-int(image_size))-len(tempdata) 
+        #####################
         
         return next_state, reward, done 
     

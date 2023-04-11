@@ -116,6 +116,8 @@ public class Server : MonoBehaviour
                             datapacket.is_episode_end = SendData[3];
                             datapacket.image_size = SendData[4];
                             datapacket.image = imagedata;
+                            //Debug.Log("!!!!imagedata is null??!!!! " + imagedata);
+                            Debug.Log("!!!!image data size !!!! " +datapacket.image.Length);
                             break;
                         }
                         else
