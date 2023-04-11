@@ -4,7 +4,7 @@ import sys
 
 #import gym
 from Env_Racing import Env1
-from Env_Racing import Env2
+#from Env_Racing import Env2
 import numpy as np
 
 import tensorflow as tf

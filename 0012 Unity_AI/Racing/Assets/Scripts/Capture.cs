@@ -91,7 +91,7 @@ public class Capture : MonoBehaviour
         //Debug.Log("tempbytes Size is :" + tempbytes.Length);
         Destroy(screenShot);
         //File.WriteAllText(name, file);
-        File.WriteAllBytes(name, bytes);
+        //File.WriteAllBytes(name, bytes);
         return file;
         
 
