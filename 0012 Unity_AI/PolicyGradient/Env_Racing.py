@@ -8,6 +8,7 @@ import base64
 from io import StringIO
 from io import BytesIO
 from PIL import Image
+import tensorflow as tf
 import numpy as np
 class Env1():
     def __init__(self):
@@ -34,13 +35,13 @@ class Env1():
         # 데이터 수신
         pos_x = struct.unpack('f',self.socket.recv(4))[0] # 다음 공의 x 좌표
         pos_y = struct.unpack('f',self.socket.recv(4))[0] # 다음 공의 z 좌표
-        next_state_position = [pos_x,pos_y]
+        next_state_position = np.array([[pos_x,pos_y]])
 
         reward = struct.unpack('f',self.socket.recv(4))[0] # 다음 공의 x,z에서 받을 리워드
         done_ = struct.unpack('f',self.socket.recv(4))[0] # episode가 끝났는지에 대한 플래그 0 -> False, 1 -> True
-        if done_ == 0.0:
+        if int(done_) == 0:
             done = False
-        elif done_ == 1.0:
+        elif int(done_) == 1:
             done = True
         # 이미지 데이터 수신
         image_size = struct.unpack('f',self.socket.recv(4))[0] # image size 크기 받기
@@ -58,10 +59,12 @@ class Env1():
         stream = BytesIO(img) 
         image = Image.open(stream).convert('L')
         image = image.resize((64,64))
+        #image.show()
         #print(np.asarray(image))
         #print(np.asarray(image).shape)
         stream.close()
-        next_state_image = np.asarray(image).reshape(1,64,64,1)
+        next_state_image = np.asarray(image).reshape(1,64,64,1).astype(np.float32)
+        #next_state_image = tf.image.convert_image_dtype(img,tf.)
         
         next_state = {'image':next_state_image,'position':next_state_position}
 

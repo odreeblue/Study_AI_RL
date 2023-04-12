@@ -21,6 +21,7 @@ public class SphereController : MonoBehaviour
     //public int game_done;
     public GameObject goal;
     public bool IsGoal;
+    public bool IsInitial = false;
     public float bonus;
     public int max_step = 300;
     public int count_step;
@@ -46,6 +47,8 @@ public class SphereController : MonoBehaviour
         IsGoal = false;
 
         count_step = 0;
+
+        
     }
     void OnCollisionEnter(Collision col)
     {
@@ -63,19 +66,37 @@ public class SphereController : MonoBehaviour
         }
        
     }
-    void OnCollisionExit(Collision col)
-    {
-        if (col.gameObject.name.Substring(0, 3) == "Out" || col.gameObject.name.Substring(0, 3) == "InS")
-        {
-            collision_flag = false;
-            Debug.Log("벽에 부딪혔다가 나옴  "+ col.gameObject.name);
-        }
+    //void OnCollisionExit(Collision col)
+    //{
+    //    if (col.gameObject.name.Substring(0, 3) == "Out" || col.gameObject.name.Substring(0, 3) == "InS")
+    //    {
+    //        collision_flag = false;
+    //        Debug.Log("벽에 부딪혔다가 나옴  "+ col.gameObject.name);
+    //    }
 
-    }
+    //}
 
     // Update is called once per frame
     void Update()
     {
+        if (IsInitial == true) // 클라이언트에서 초기값 요청하는 신호
+        {
+            Debug.Log("초기값 전달 ");
+            Server.Instance.SendData.Add(SphereRigidbody.transform.position.x); // position_x 전달(1)
+            Server.Instance.SendData.Add(SphereRigidbody.transform.position.z); // position_y 전달(2)
+            Server.Instance.SendData.Add(99.0f); // 초기값 전달 (3)
+            Server.Instance.SendData.Add(99.0f); // 초기값 전달 (4)
+
+            // Image 데이터 전달
+            String Image_data = Capture.Instance.ScreenShot(); //스크린샷 찍고
+            byte[] Length = Convert.FromBase64String(Image_data); // 이미지 크기 확인
+            Debug.Log("Image_data Size is : " + Image_data.Length); // 이미지 크기 프린트
+
+            Server.Instance.imagedata = Image_data; // 이미지 전달(6)
+            Server.Instance.SendData.Add(Image_data.Length); // 이미지 크기 전달(5)
+            IsInitial = false;
+        }
+
         if (count_step < max_step)
         {
             if (move != new Vector3(0, 0, 0))// move가 입력이되었고 게임이 끝나지 않았으면
@@ -88,7 +109,7 @@ public class SphereController : MonoBehaviour
             Debug.Log("max_step 초과, 다시 episode 초기화");
             Server.Instance.SendData.Add(SphereRigidbody.transform.position.x); // position_x 전달(1)
             Server.Instance.SendData.Add(SphereRigidbody.transform.position.z); // position_y 전달(2)
-            Server.Instance.SendData.Add(-5.0f); // 목표 지점 도착 전에 최대 step에 도달했으니 벌점 주기(3)
+            Server.Instance.SendData.Add(0.0f); // 목표 지점 도착 전에 최대 step에 도달했으니 벌점 주기(3)
             Server.Instance.SendData.Add(1.0f); // 에피소드가 끝났다고 알려주기(4)
 
             // Image 데이터 전달
@@ -134,7 +155,7 @@ public class SphereController : MonoBehaviour
                 if (IsGoal == true) // 골 지점에 도달했다면
                 {
                     
-                    Server.Instance.SendData.Add(5.0f); // 목표지점에 도착했으니 보상 주기(3)
+                    Server.Instance.SendData.Add(1.0f); // 목표지점에 도착했으니 보상 주기(3)
                     Server.Instance.SendData.Add(1.0f); // 에피소드가 끝났다고 전달하기(4)
                     // Image 데이터 전달
                     String Image_data = Capture.Instance.ScreenShot(); //스크린샷 찍고
@@ -147,6 +168,7 @@ public class SphereController : MonoBehaviour
                     SphereRigidbody.transform.position = new Vector3(4.0f, 3.0f, -4.0f); // 공 위치 초기화
                     SpherePosition = new Vector3(4.0f, 0.0f, -4.0f); // 
                     IsGoal = false;
+                    count_step = 0;
                     
                 }
                 else // 골 지점에 도달하지 않았다
@@ -173,7 +195,7 @@ public class SphereController : MonoBehaviour
             {
                 Server.Instance.SendData.Add(OriginalPosition.x); // position_x 전달(1)
                 Server.Instance.SendData.Add(OriginalPosition.z); // position_y 전달(2)
-                Server.Instance.SendData.Add(-0.05f); // 목표 지점 도착 전에 벽에 충돌했으니 벌점 주기(3)
+                Server.Instance.SendData.Add(0.0f); // 목표 지점 도착 전에 벽에 충돌했으니 벌점 주기(3)
                 Server.Instance.SendData.Add(0.0f); // 에피소드가 끝나지 않았다고 전달하기(4)
                 move = new Vector3(0, 0, 0);
                 SphereRigidbody.transform.position = OriginalPosition; // 공 위치 초기화
@@ -202,19 +224,20 @@ public class SphereController : MonoBehaviour
     {
         if(direction == 99) // 클라이언트에서 초기값 요청
         {
-            Debug.Log("초기값 전달 ");
-            Server.Instance.SendData.Add(SphereRigidbody.transform.position.x); // position_x 전달(1)
-            Server.Instance.SendData.Add(SphereRigidbody.transform.position.z); // position_y 전달(2)
-            Server.Instance.SendData.Add(99.0f); // 초기값 전달 (3)
-            Server.Instance.SendData.Add(99.0f); // 초기값 전달 (4)
+            IsInitial = true;
+            //Debug.Log("초기값 전달 ");
+            //Server.Instance.SendData.Add(SphereRigidbody.transform.position.x); // position_x 전달(1)
+            //Server.Instance.SendData.Add(SphereRigidbody.transform.position.z); // position_y 전달(2)
+            //Server.Instance.SendData.Add(99.0f); // 초기값 전달 (3)
+            //Server.Instance.SendData.Add(99.0f); // 초기값 전달 (4)
 
-            // Image 데이터 전달
-            String Image_data = Capture.Instance.ScreenShot(); //스크린샷 찍고
-            byte[] Length = Convert.FromBase64String(Image_data); // 이미지 크기 확인
-            Debug.Log("Image_data Size is : " + Image_data.Length); // 이미지 크기 프린트
+            //// Image 데이터 전달
+            //String Image_data = Capture.Instance.ScreenShot(); //스크린샷 찍고
+            //byte[] Length = Convert.FromBase64String(Image_data); // 이미지 크기 확인
+            //Debug.Log("Image_data Size is : " + Image_data.Length); // 이미지 크기 프린트
 
-            Server.Instance.imagedata = Image_data; // 이미지 전달(6)
-            Server.Instance.SendData.Add(Image_data.Length); // 이미지 크기 전달(5)
+            //Server.Instance.imagedata = Image_data; // 이미지 전달(6)
+            //Server.Instance.SendData.Add(Image_data.Length); // 이미지 크기 전달(5)
         }
         else
         {

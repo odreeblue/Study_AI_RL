@@ -22,37 +22,32 @@ class Network(Model):
         """Initialization."""
         super(Network, self).__init__()
 
-        # self.state_size = state_size
-        # self.action_size = action_size
-        # # set the hidden layers
-        # self.layer1 = tf.keras.layers.Dense(hidden_size, activation='relu')
-        # self.layer2 = tf.keras.layers.Dense(hidden_size, activation='relu')
-        # self.policy = tf.keras.layers.Dense(self.action_size,activation='softmax')
-
-        #self.cnn_model.add(tf.keras.layers.Conv2D(32,(6,6),activation='relu',input_shape=(64,64,1)))
-        self.conv1 = layers.Conv2D(filters=16, kernel_size=[3, 3], padding='SAME', activation=tf.nn.relu)
-        self.pool1 = layers.MaxPool2D(padding='SAME')
-        self.conv2 = layers.Conv2D(filters=32, kernel_size=[3, 3], padding='SAME', activation=tf.nn.relu)
-        self.pool2 = layers.MaxPool2D(padding='SAME')
+        self.conv1 = layers.Conv2D(filters=16, kernel_size=[3, 3], padding='same', activation=tf.nn.relu)
+        self.pool1 = layers.MaxPool2D(padding='same')
+        self.conv2 = layers.Conv2D(filters=32, kernel_size=[3, 3], padding='same', activation=tf.nn.relu)
+        self.pool2 = layers.MaxPool2D(padding='same')
         self.pool2_flat = layers.Flatten()
         self.dense3 = layers.Dense(units=32, activation=tf.nn.relu)
-        self.dense5 = layers.Dense(units=16,activation=tf.nn.relu)
+        self.dense4 = layers.Dense(units=16,activation=tf.nn.relu)
         self.dense5 = layers.Dense(units=4,activation=tf.nn.softmax)
-
-    #def call(self, state):
-        # layer1 = self.layer1(state)
-        # layer2 = self.layer2(layer1)
-        # policy = self.policy(layer2)
-    def call(self, inputs, training = False):
-        net = self.conv1(inputs['image'])
+    @tf.function
+    def call(self, inputs_img, inputs_pos, training = False):
+        net = self.conv1(inputs_img)
         net = self.pool1(net)
         net = self.conv2(net)
         net = self.pool2(net)
         net = self.pool2_flat(net)
+        net = tf.keras.layers.Concatenate()([net,inputs_pos])
+        net = self.dense3(net)
         net = self.dense4(net)
-        net = self.drop4(net)
         net = self.dense5(net)
         return net
+    
+    def summary(self):
+        x_img = layers.Input(shape=(64, 64, 1),name='image_input')
+        x_pos = layers.Input(shape=(2,),name='position_input')
+        model = Model(inputs=[x_img,x_pos], outputs=self.call(x_img,x_pos))
+        return model.summary()
 
 class DQNAgent:
     """A2CAgent interacting with environment.
@@ -131,26 +126,36 @@ class DQNAgent:
             discnt_rewards.append(R_to_Go)
         discnt_rewards.reverse()
         #print("discnt_rewards :  ",discnt_rewards)
-        states  = np.array(states, dtype=np.float32)
+        st_img = []
+        st_pos = []
+        for st in states:
+            st_img.append(st['image'].reshape((64,64,1)))
+            st_pos.append(st['position'].reshape((2)))
+
+
+        states_img  = np.array(st_img, dtype=np.float32)
+        print("state_img size is ",states_img.shape)
+        states_pos  = np.array(st_pos, dtype=np.float32)
+        print("states_pos size is ",states_pos.shape)
         actions = np.array(actions, dtype=np.int32)
         discnt_rewards = np.array(discnt_rewards, dtype=np.float32)
         
-        return states, actions, discnt_rewards
+        return states_img,states_pos, actions, discnt_rewards
         
-    def train_step(self, states, actions, discnt_rewards):
+    def train_step(self, states_img,states_pos, actions, discnt_rewards):
         discnt_rewards = tf.reshape(discnt_rewards, (len(discnt_rewards),))
         
         dqn_variable = self.model.trainable_variables
-        print("dqn_variable : ",dqn_variable)
+        #print("dqn_variable : ",dqn_variable)
         with tf.GradientTape() as tape:
-            curr_Ps = self.model(states, training=True)
+            curr_Ps = self.model(states_img,states_pos, training=True)
             print("curr_Ps : ",curr_Ps)
             loss = self.actor_loss(curr_Ps, actions, discnt_rewards)
             print("loss : ", loss)
             
         dqn_grads = tape.gradient(loss, dqn_variable)
-        print("dqn_grads  : ",dqn_grads)
-        print(zip(dqn_grads,dqn_variable))
+        #print("dqn_grads  : ",dqn_grads)
+        #print(zip(dqn_grads,dqn_variable))
         self.optimizers.apply_gradients(zip(dqn_grads, dqn_variable))
         
         return loss
@@ -217,6 +222,6 @@ if __name__ == "__main__":
                 scores.append(episode_reward)
                 print("Episode " + str(episode+1) + ": " + str(episode_reward))
                 
-                states, actions, discnt_rewards = agent.n_step_td_target(states, actions, rewards, 1)
-                loss = agent.train_step(states, actions, discnt_rewards) 
+                states_img,states_pos, actions, discnt_rewards = agent.n_step_td_target(states, actions, rewards, 1)
+                loss = agent.train_step(states_img,states_pos, actions, discnt_rewards) 
                 break
