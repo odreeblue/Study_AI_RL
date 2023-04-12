@@ -61,8 +61,8 @@ class Env1():
         #print(np.asarray(image))
         #print(np.asarray(image).shape)
         stream.close()
-        next_state_image = np.asarray(image)
-
+        next_state_image = np.asarray(image).reshape(1,64,64,1)
+        
         next_state = {'image':next_state_image,'position':next_state_position}
 
         #####################

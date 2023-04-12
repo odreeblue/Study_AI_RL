@@ -11,6 +11,7 @@ import tensorflow as tf
 import tensorflow_probability as tfp
 from tensorflow.keras import optimizers, losses
 from tensorflow.keras import Model
+from tensorflow.keras import layers
 
 from IPython.display import clear_output
 
@@ -20,23 +21,38 @@ class Network(Model):
     ):
         """Initialization."""
         super(Network, self).__init__()
-        
-        self.state_size = state_size
-        self.action_size = action_size
-        # set the hidden layers
-        self.layer1 = tf.keras.layers.Dense(hidden_size, activation='relu')
-        self.layer2 = tf.keras.layers.Dense(hidden_size, activation='relu')
-        self.policy = tf.keras.layers.Dense(self.action_size,activation='softmax')
+
+        # self.state_size = state_size
+        # self.action_size = action_size
+        # # set the hidden layers
+        # self.layer1 = tf.keras.layers.Dense(hidden_size, activation='relu')
+        # self.layer2 = tf.keras.layers.Dense(hidden_size, activation='relu')
+        # self.policy = tf.keras.layers.Dense(self.action_size,activation='softmax')
 
         #self.cnn_model.add(tf.keras.layers.Conv2D(32,(6,6),activation='relu',input_shape=(64,64,1)))
+        self.conv1 = layers.Conv2D(filters=16, kernel_size=[3, 3], padding='SAME', activation=tf.nn.relu)
+        self.pool1 = layers.MaxPool2D(padding='SAME')
+        self.conv2 = layers.Conv2D(filters=32, kernel_size=[3, 3], padding='SAME', activation=tf.nn.relu)
+        self.pool2 = layers.MaxPool2D(padding='SAME')
+        self.pool2_flat = layers.Flatten()
+        self.dense3 = layers.Dense(units=32, activation=tf.nn.relu)
+        self.dense5 = layers.Dense(units=16,activation=tf.nn.relu)
+        self.dense5 = layers.Dense(units=4,activation=tf.nn.softmax)
 
-
-
-    def call(self, state):
-        layer1 = self.layer1(state)
-        layer2 = self.layer2(layer1)
-        policy = self.policy(layer2)
-        return policy
+    #def call(self, state):
+        # layer1 = self.layer1(state)
+        # layer2 = self.layer2(layer1)
+        # policy = self.policy(layer2)
+    def call(self, inputs, training = False):
+        net = self.conv1(inputs['image'])
+        net = self.pool1(net)
+        net = self.conv2(net)
+        net = self.pool2(net)
+        net = self.pool2_flat(net)
+        net = self.dense4(net)
+        net = self.drop4(net)
+        net = self.dense5(net)
+        return net
 
 class DQNAgent:
     """A2CAgent interacting with environment.
@@ -77,7 +93,8 @@ class DQNAgent:
         #print("-------------------get_action---------------------------")
         #print("state : ", state)
         
-        prob = self.model(np.array([state]))
+        #prob = self.model(np.array([state]))
+        prob = self.model(state['image'],state['position'])
         #print("prob = self.model(np.array([state])) -> ",prob)
         
         prob = prob.numpy()
@@ -160,8 +177,8 @@ if __name__ == "__main__":
     scores = []
     agent.env.connect() # 게임과 tcp/ip 연결
 
-    agent_x = 4.0
-    agent_y = -4.0
+    #agent_x = 4.0
+    #agent_y = -4.0
     
     complete_episodes = 0
 
