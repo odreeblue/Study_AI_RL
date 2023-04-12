@@ -11,7 +11,7 @@ class Env1():
         #os.system("Racing.exe")
         time.sleep(5)
         self.server_ip = '127.0.0.1'
-        self.server_port = 50001
+        self.server_port = 50002
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         
     def connect(self):
@@ -35,19 +35,20 @@ class Env1():
         done_ = struct.unpack('f',self.socket.recv(4))[0] # episode가 끝났는지에 대한 플래그
                                                           # 0 -> False, 1 -> True
         #print("done : ", done_," rewards: ", reward)
-        if done_ == 0.0:
-            done = False
-        elif done_ == 1.0:
-            done = True
 
-        image_size = struct.unpack('f',self.socket.recv(4))[0] # image size 크기 받기
-        print(image_size)
-        data = b''
-        #data= ""
-        to_receive = 51000-int(image_size)
-        while to_receive > 0:
-            data += self.socket.recv(51000-int(image_size))
-            to_receive = int(51000-int(image_size)) - len(data)
+        if int(done_) == 0:
+            done = False
+        elif int(done_) == 1:
+            done = True
+            print("episode 끝!!!")
+        # image_size = struct.unpack('f',self.socket.recv(4))[0] # image size 크기 받기
+        # print(image_size)
+        # data = b''
+        # #data= ""
+        # to_receive = 51000-int(image_size)
+        # while to_receive > 0:
+        #     data += self.socket.recv(51000-int(image_size))
+        #     to_receive = int(51000-int(image_size)) - len(data)
         
         #image_data = base64.b64decode(data)
 

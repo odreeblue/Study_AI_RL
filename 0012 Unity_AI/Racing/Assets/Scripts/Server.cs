@@ -72,7 +72,7 @@ public class Server : MonoBehaviour
 
         try
         {
-            tcpListener_server = new TcpListener(IPAddress.Parse("127.0.0.1"), 50001);
+            tcpListener_server = new TcpListener(IPAddress.Parse("127.0.0.1"), 50002);
             tcpListener_server.Start();
             Debug.Log("Server is listening");
             while (true)
@@ -108,14 +108,14 @@ public class Server : MonoBehaviour
                     while (true)
                     {
 
-                        if (SendData.Count == 5 && imagedata != null) // Sphere로부터 데이터가 다 입력 됐으면
+                        if (SendData.Count == 4 /*&& imagedata != null*/) // Sphere로부터 데이터가 다 입력 됐으면
                         {
                             datapacket.position_x = SendData[0];
                             datapacket.position_z = SendData[1];
                             datapacket.reward = SendData[2];
                             datapacket.is_episode_end = SendData[3];
-                            datapacket.image_size = SendData[4];
-                            datapacket.image = imagedata;
+                            //datapacket.image_size = SendData[4];
+                            //datapacket.image = imagedata;
                             break;
                         }
                         else
@@ -159,10 +159,10 @@ public class DataPacket
     public float reward;
     [MarshalAs(UnmanagedType.R4)]
     public float is_episode_end;
-    [MarshalAs(UnmanagedType.R4)]
-    public float image_size;
-    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 51000)] ///// 여기가 진짜
-    public string image; ////여기가 진짜 
+    //[MarshalAs(UnmanagedType.R4)]
+    //public float image_size;
+    //[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 51000)] ///// 여기가 진짜
+    //public string image; ////여기가 진짜 
     //[MarshalAs(UnmanagedType.ByValArray)] --> 이거 안됌 전달 사이즈가 20밖에 안됌
     //[MarshalAs(UnmanagedType.ByValArray, SizeConst = 32000)]
     //public byte[] image;

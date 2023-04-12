@@ -57,7 +57,7 @@ public class SphereController : MonoBehaviour
         }
         if (col.gameObject.name.Substring(0, 2) == "Go")
         {
-            col.transform.position = new Vector3(col.transform.position.x, -2.0f,col.transform.position.z);
+            //col.transform.position = new Vector3(col.transform.position.x, -2.0f,col.transform.position.z);
             IsGoal = true;
 
         }
@@ -88,7 +88,7 @@ public class SphereController : MonoBehaviour
             Debug.Log("max_step 초과, 다시 episode 초기화");
             Server.Instance.SendData.Add(SphereRigidbody.transform.position.x); // position_x 전달
             Server.Instance.SendData.Add(SphereRigidbody.transform.position.z); // position_y 전달
-            Server.Instance.SendData.Add(-5.0f); // 목표 지점 도착 전에 최대 step에 도달했으니 벌점 주기
+            Server.Instance.SendData.Add(0.01f); // 목표 지점 도착 전에 최대 step에 도달했으니 벌점 주기
             Server.Instance.SendData.Add(1.0f); // 에피소드가 끝났다고 알려주기
 
             move = new Vector3(0, 0, 0);
@@ -128,12 +128,12 @@ public class SphereController : MonoBehaviour
                     Server.Instance.SendData.Add(5.0f); // 목표지점에 도착했으니 보상 주기(3)
                     Server.Instance.SendData.Add(1.0f); // 에피소드가 끝났다고 전달하기(4)
                     // Image 데이터 전달
-                    String Image_data = Capture.Instance.ScreenShot(); //스크린샷 찍고
-                    byte[] Length = Convert.FromBase64String(Image_data); // 이미지 크기 확인
-                    Debug.Log("Image_data Size is : "+ Image_data.Length); // 이미지 크기 프린트
-                    Server.Instance.SendData.Add(Image_data.Length); // 이미지 크기 전달(5)
-                    Server.Instance.imagedata = Image_data; // 이미지 전달(6)
-
+                    //String Image_data = Capture.Instance.ScreenShot(); //스크린샷 찍고
+                    //byte[] Length = Convert.FromBase64String(Image_data); // 이미지 크기 확인
+                    //Debug.Log("Image_data Size is : "+ Image_data.Length); // 이미지 크기 프린트
+                    //Server.Instance.SendData.Add(Image_data.Length); // 이미지 크기 전달(5)
+                    //Server.Instance.imagedata = Image_data; // 이미지 전달(6)
+                    count_step = 0;
                     SphereRigidbody.transform.position = new Vector3(4.0f, 3.0f, -4.0f); // 공 위치 초기화
                     SpherePosition = new Vector3(4.0f, 0.0f, -4.0f); // 
                     IsGoal = false;
@@ -144,11 +144,11 @@ public class SphereController : MonoBehaviour
                     Server.Instance.SendData.Add(0.01f); // 목표지점에 도착하지 않았고, 벽에 부딪히지 않았으니 0.01점 보상(3)
                     Server.Instance.SendData.Add(0.0f); // 에피소드가 끝나지 않았다고 전달하기(4)
                     // Image 데이터 전달
-                    String Image_data = Capture.Instance.ScreenShot(); //스크린샷 찍고
-                    byte[] Length = Convert.FromBase64String(Image_data); // 이미지 크기 확인
-                    Debug.Log("Image_data Size is : " + Image_data.Length); // 이미지 크기 프린트
-                    Server.Instance.SendData.Add(Image_data.Length); // 이미지 크기 전달(5)
-                    Server.Instance.imagedata = Image_data; // 이미지 전달(6)
+                    //String Image_data = Capture.Instance.ScreenShot(); //스크린샷 찍고
+                    //byte[] Length = Convert.FromBase64String(Image_data); // 이미지 크기 확인
+                    //Debug.Log("Image_data Size is : " + Image_data.Length); // 이미지 크기 프린트
+                    //Server.Instance.SendData.Add(Image_data.Length); // 이미지 크기 전달(5)
+                    //Server.Instance.imagedata = Image_data; // 이미지 전달(6)
 
                     SpherePosition = SphereRigidbody.transform.position;
                     
@@ -165,14 +165,14 @@ public class SphereController : MonoBehaviour
                 Server.Instance.SendData.Add(-0.05f); // 목표 지점 도착 전에 벽에 충돌했으니 벌점 주기(3)
                 Server.Instance.SendData.Add(0.0f); // 에피소드가 끝나지 않았다고 전달하기(4)
                 move = new Vector3(0, 0, 0);
-                SphereRigidbody.transform.position = OriginalPosition; // 공 위치 초기화
+                SphereRigidbody.transform.position = OriginalPosition; // 직전 위치로 이동
 
                 // Image 데이터 전달
-                String Image_data = Capture.Instance.ScreenShot(); //스크린샷 찍고
-                byte[] Length = Convert.FromBase64String(Image_data); // 이미지 크기 확인
-                Debug.Log("Image_data Size is : " + Image_data.Length); // 이미지 크기 프린트
-                Server.Instance.SendData.Add(Image_data.Length); // 이미지 크기 전달(5)
-                Server.Instance.imagedata = Image_data; // 이미지 전달(6)
+                //String Image_data = Capture.Instance.ScreenShot(); //스크린샷 찍고
+                //byte[] Length = Convert.FromBase64String(Image_data); // 이미지 크기 확인
+                //Debug.Log("Image_data Size is : " + Image_data.Length); // 이미지 크기 프린트
+                //Server.Instance.SendData.Add(Image_data.Length); // 이미지 크기 전달(5)
+                //Server.Instance.imagedata = Image_data; // 이미지 전달(6)
 
 
                 //collision_flag = false;
